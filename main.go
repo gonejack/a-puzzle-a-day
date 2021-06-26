@@ -49,7 +49,7 @@ var cc = []func(string, ...interface{}) string{
 	color.BlueString,
 	color.MagentaString,
 	color.CyanString,
-	color.HiBlueString,
+	color.HiBlackString,
 	color.HiRedString,
 }
 
