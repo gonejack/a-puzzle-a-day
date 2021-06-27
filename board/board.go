@@ -3,6 +3,8 @@ package board
 import (
 	"fmt"
 	"strings"
+
+	"github.com/fatih/color"
 )
 
 var Board = Board7x7{
@@ -38,9 +40,9 @@ func (b *Board7x7) Print() {
 	for i := range b {
 		for j := range b[i] {
 			if j > 0 {
-				fmt.Print(" ")
+				fmt.Print("  ")
 			}
-			fmt.Print(b[i][j].Text)
+			fmt.Fprint(color.Output, b[i][j].Text)
 		}
 		fmt.Println()
 	}

@@ -73,7 +73,7 @@ func search(b *board.Board7x7, idx int) {
 					c := *b
 
 					placed[i] = true
-					p.Place(&c, row, col, cc[i]("◼︎"))
+					p.Place(&c, row, col, cc[i]("■"))
 					search(&c, idx+1)
 
 					delete(placed, i)
