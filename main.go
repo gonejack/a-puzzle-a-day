@@ -53,17 +53,25 @@ var cc = []func(string, ...interface{}) string{
 	color.HiRedString,
 }
 
-func search(b *board.Board7x7, idx int) {
+func search(b *board.Board7x7, pos int) {
 	if len(placed) == 8 {
 		b.Print()
 		count += 1
 		return
 	}
 
-	row := idx / 7
-	col := idx % 7
-	if row >= 7 {
-		return
+	row, col := 0, 0
+	for {
+		row = pos / 7
+		col = pos % 7
+		if row >= 7 {
+			return
+		}
+		if b.CanSet(row, col) {
+			break
+		} else {
+			pos += 1
+		}
 	}
 
 	for i := range piece.Pieces {
@@ -71,19 +79,12 @@ func search(b *board.Board7x7, idx int) {
 			for _, p := range piece.Pieces[i] {
 				if p.CanPlace(b, row, col) {
 					c := *b
-
 					placed[i] = true
 					p.Place(&c, row, col, cc[i]("■"))
-					search(&c, idx+1)
-
+					search(&c, pos+1)
 					delete(placed, i)
 				}
 			}
 		}
-	}
-
-	if !b.CanSet(row, col) {
-		search(b, idx+1)
-		return
 	}
 }

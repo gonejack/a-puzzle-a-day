@@ -58,23 +58,23 @@ const n = 4
 type piece [n][n]int
 
 func (p piece) Print() {
-	for x := range p {
-		fmt.Println(p[x])
+	for r := range p {
+		fmt.Println(p[r])
 	}
 	fmt.Println(strings.Repeat("-", 10))
 }
-func (p piece) rotate() (r piece) {
-	for x := range r {
-		for y := range r[x] {
-			r[x][y] = p[y][n-x-1]
+func (p piece) rotate() (rp piece) {
+	for r := range rp {
+		for c := range rp[r] {
+			rp[r][c] = p[c][n-r-1]
 		}
 	}
 	return
 }
 func (p piece) flip() (f piece) {
-	for x := range f {
-		for i := 0; i < n; i++ {
-			f[x][i] = p[x][n-i-1]
+	for r := range f {
+		for c := 0; c < n; c++ {
+			f[r][c] = p[r][n-c-1]
 		}
 	}
 	return
@@ -112,44 +112,54 @@ func (p piece) shift() (s piece) {
 	}
 
 	for {
-		for i := range s {
-			if s[i][0] != 0 {
+		for r := range s {
+			if s[r][0] != 0 {
 				return
 			}
 		}
 
-		for i := range s {
-			for j := range s[i] {
-				if j < 3 {
-					s[i][j] = s[i][j+1]
+		for r := range s {
+			for c := range s[r] {
+				if c < 3 {
+					s[r][c] = s[r][c+1]
 				} else {
-					s[i][j] = 0
+					s[r][c] = 0
 				}
 			}
 		}
 	}
 }
-func (p piece) CanPlace(b *board.Board7x7, x, y int) bool {
-	return p.put(b, x, y, "", false)
+func (p piece) CanPlace(b *board.Board7x7, row, col int) bool {
+	return p.put(b, row, col, "", false)
 }
-func (p piece) Place(b *board.Board7x7, x, y int, text string) bool {
-	return p.put(b, x, y, text, true)
+func (p piece) Place(b *board.Board7x7, row, col int, text string) bool {
+	return p.put(b, row, col, text, true)
 }
-func (p piece) put(b *board.Board7x7, x int, y int, text string, doWrite bool) (suc bool) {
-	for i := range p {
-		for j := range p[i] {
-			if p[i][j] == 0 {
+func (p piece) put(b *board.Board7x7, row int, col int, text string, doWrite bool) (suc bool) {
+	// find first not empty block
+	dr, dc := 0, 0
+	for dr = 0; dr < n; dr++ {
+		for dc = 0; dc < n; dc++ {
+			if p[dr][dc] == 1 {
+				goto place
+			}
+		}
+	}
+
+place:
+	for r := dr; r < n; r++ {
+		for c := 0; c < n; c++ {
+			if p[r][c] == 0 {
 				continue
 			}
-
-			tx := x + i
-			ty := y + j
-			ok := b.CanSet(tx, ty)
+			tr := row + r - dr
+			tc := col + c - dc
+			ok := b.CanSet(tr, tc)
 			if !ok {
 				return false
 			}
 			if doWrite {
-				b.Set(text, tx, ty)
+				b.Set(text, tr, tc)
 			}
 		}
 	}

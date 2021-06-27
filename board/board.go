@@ -25,24 +25,24 @@ type (
 	Board7x7 [7][7]cell
 )
 
-func (b *Board7x7) CanSet(x int, y int) (ok bool) {
-	if x > 6 || y > 6 {
+func (b *Board7x7) CanSet(r int, c int) (ok bool) {
+	if r < 0 || r > 6 || c < 0 || c > 6 {
 		return false
 	}
-	return b[x][y].Flag == 0
+	return b[r][c].Flag == 0
 }
-func (b *Board7x7) Set(Text string, x int, y int) {
-	b[x][y].Text = Text
-	b[x][y].Flag = 1
+func (b *Board7x7) Set(Text string, r int, c int) {
+	b[r][c].Text = Text
+	b[r][c].Flag = 1
 }
 
 func (b *Board7x7) Print() {
-	for i := range b {
-		for j := range b[i] {
-			if j > 0 {
+	for r := range b {
+		for c := range b[r] {
+			if c > 0 {
 				fmt.Print("  ")
 			}
-			fmt.Fprint(color.Output, b[i][j].Text)
+			fmt.Fprint(color.Output, b[r][c].Text)
 		}
 		fmt.Println()
 	}
