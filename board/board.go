@@ -47,10 +47,10 @@ func (b *Board7x7) Print() {
 				// month needs no prefix to align with 3 width
 			} else if tlen == 2 {
 				// date needs only 1 suffix
-				print(" ")
+				fmt.Print(" ")
 			} else {
 				// colored squares need 2 suffix
-				print("  ")
+				fmt.Print("  ")
 			}
 		}
 		fmt.Println()
