@@ -39,10 +39,19 @@ func (b *Board7x7) Set(Text string, r int, c int) {
 func (b *Board7x7) Print() {
 	for r := range b {
 		for c := range b[r] {
-			if c > 0 {
-				fmt.Print("  ")
+			text := b[r][c].Text
+			tlen := len(text)
+			fmt.Fprint(color.Output, text)
+			// align with 3-width cells
+			if tlen == 3 {
+				// month needs no prefix to align with 3 width
+			} else if tlen == 2 {
+				// date needs only 1 suffix
+				print(" ")
+			} else {
+				// colored squares need 2 suffix
+				print("  ")
 			}
-			fmt.Fprint(color.Output, b[r][c].Text)
 		}
 		fmt.Println()
 	}
