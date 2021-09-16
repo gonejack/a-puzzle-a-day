@@ -2,9 +2,8 @@ package board
 
 import (
 	"fmt"
-	"strings"
-
 	"github.com/fatih/color"
+	"strings"
 )
 
 var Board = Board7x7{
