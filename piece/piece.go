@@ -103,12 +103,14 @@ func (p piece) transforms() (ps []piece) {
 }
 func (p piece) shift() (s piece) {
 	si := 0
-	for _, r := range p {
-		if r[0]+r[1]+r[2]+r[3] == 0 {
-			continue
+	for i := range p {
+		for j := range p[i] {
+			if p[i][j] != 0 {
+				s[si] = p[i]
+				si += 1
+				break
+			}
 		}
-		s[si] = r
-		si += 1
 	}
 
 	for {
@@ -117,10 +119,9 @@ func (p piece) shift() (s piece) {
 				return
 			}
 		}
-
 		for r := range s {
 			for c := range s[r] {
-				if c < 3 {
+				if c < n-1 {
 					s[r][c] = s[r][c+1]
 				} else {
 					s[r][c] = 0
