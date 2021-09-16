@@ -71,10 +71,10 @@ func (p piece) rotate() (rp piece) {
 	}
 	return
 }
-func (p piece) flip() (f piece) {
-	for r := range f {
+func (p piece) flip() (fp piece) {
+	for r := range fp {
 		for c := 0; c < n; c++ {
-			f[r][c] = p[r][n-c-1]
+			fp[r][c] = p[r][n-c-1]
 		}
 	}
 	return
@@ -101,30 +101,30 @@ func (p piece) transforms() (ps []piece) {
 
 	return
 }
-func (p piece) shift() (s piece) {
-	si := 0
-	for i := range p {
-		for j := range p[i] {
-			if p[i][j] != 0 {
-				s[si] = p[i]
-				si += 1
+func (p piece) shift() (sp piece) {
+	tr := 0
+	for r := range p {
+		for c := range p[r] {
+			if p[r][c] != 0 {
+				sp[tr] = p[r] // copy not empty row
+				tr += 1
 				break
 			}
 		}
 	}
 
 	for {
-		for r := range s {
-			if s[r][0] != 0 {
+		for r := range sp {
+			if sp[r][0] != 0 {
 				return
 			}
 		}
-		for r := range s {
-			for c := range s[r] {
+		for r := range sp {
+			for c := range sp[r] {
 				if c < n-1 {
-					s[r][c] = s[r][c+1]
+					sp[r][c] = sp[r][c+1]
 				} else {
-					s[r][c] = 0
+					sp[r][c] = 0
 				}
 			}
 		}
