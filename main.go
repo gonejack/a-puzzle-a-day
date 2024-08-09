@@ -16,12 +16,10 @@ func main() {
 	now := time.Now()
 	mon := now.Month().String()[:3]
 	day := strconv.Itoa(now.Day())
-
 	if len(os.Args) > 2 {
 		mon = os.Args[1]
 		day = os.Args[2]
 	}
-
 	fmt.Printf("searching for %s %s\n", mon, day)
 	search(board.NewBoard7x7(mon, day), 0)
 	fmt.Printf("found %d solutions\n", found)
@@ -46,7 +44,6 @@ func search(b *board.Board7x7, pos int) {
 		found += 1
 		return
 	}
-
 	row, col := 0, 0
 	for {
 		row = pos / 7
@@ -60,7 +57,6 @@ func search(b *board.Board7x7, pos int) {
 			pos += 1
 		}
 	}
-
 	for i := range piece.Pieces {
 		if !placed[i] {
 			for _, p := range piece.Pieces[i] {

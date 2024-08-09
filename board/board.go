@@ -22,18 +22,18 @@ func (b *Board7x7) reset() *Board7x7 {
 `
 	for r, line := range strings.Split(strings.Trim(dat7x7, "\n"), "\n") {
 		for c, word := range strings.Split(line, "|") {
-			t := strings.TrimSpace(word)
-			b[r][c].text = t
-			b[r][c].used = t == "-"
+			w := strings.TrimSpace(word)
+			b[r][c].text = w
+			b[r][c].used = w == "-"
 		}
 	}
 	return b
 }
-func (b *Board7x7) setMonDay(mon string, day string) *Board7x7 {
+func (b *Board7x7) setDate(month string, day string) *Board7x7 {
 	for i := range b {
 		for j := range b[i] {
 			switch {
-			case strings.EqualFold(b[i][j].text, mon):
+			case strings.EqualFold(b[i][j].text, month):
 				b[i][j].used = true
 			case strings.EqualFold(b[i][j].text, day):
 				b[i][j].used = true
@@ -81,5 +81,5 @@ func (b *Board7x7) Print() {
 
 func NewBoard7x7(mon string, day string) *Board7x7 {
 	var b Board7x7
-	return b.reset().setMonDay(mon, day)
+	return b.reset().setDate(mon, day)
 }

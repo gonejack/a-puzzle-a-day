@@ -48,8 +48,7 @@ var Pieces [][]piece
 
 func init() {
 	for _, p := range pieces {
-		pt := p.transforms()
-		Pieces = append(Pieces, pt)
+		Pieces = append(Pieces, p.transforms())
 	}
 }
 
@@ -81,24 +80,20 @@ func (p piece) flip() (fp piece) {
 }
 func (p piece) transforms() (ps []piece) {
 	ps = append(ps, p)
-
 	for i := 0; i < 3; i++ {
 		ps = append(ps, ps[i].rotate())
 	}
 	for i := 4; i < 8; i++ {
 		ps = append(ps, ps[i-4].flip())
 	}
-
-	m := make(map[piece]struct{})
+	uniq := make(map[piece]struct{})
 	for _, p := range ps {
-		m[p.shift()] = struct{}{}
+		uniq[p.shift()] = struct{}{}
 	}
-
 	ps = nil
-	for p := range m {
+	for p := range uniq {
 		ps = append(ps, p)
 	}
-
 	return
 }
 func (p piece) shift() (sp piece) {
@@ -112,7 +107,6 @@ func (p piece) shift() (sp piece) {
 			}
 		}
 	}
-
 	for {
 		for r := range sp {
 			if sp[r][0] != 0 {
@@ -137,7 +131,7 @@ func (p piece) Place(b *board.Board7x7, row, col int, text string) bool {
 	return p.put(b, row, col, text, true)
 }
 func (p piece) put(b *board.Board7x7, row int, col int, text string, doWrite bool) (suc bool) {
-	// find first not empty block
+	// find first not transparent block of this piece
 	dr, dc := 0, 0
 	for dr = 0; dr < n; dr++ {
 		for dc = 0; dc < n; dc++ {
